@@ -1,0 +1,5 @@
+.git
+.vs
+.vscode
+__pycache__
+Model/

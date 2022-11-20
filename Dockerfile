@@ -1,20 +1,13 @@
-FROM tiangolo/uwsgi-nginx-flask:latest
+# syntax=docker/dockerfile:1
+FROM python:3.8-slim-buster
 
-RUN apk --update add bash nano
-
-RUN apk add --no-cache python3-dev \
-    && python3 -m ensurepip \
-    && pip3 install --upgrade pip
+EXPOSE 5000
 
 WORKDIR /app
 
 COPY . /app
 
-ENV STATIC_URL /static
-ENV STATIC_PATH /var/www/app/static
-
 RUN pip3 --no-cache-dir install -r requirements.txt
 
-EXPOSE 5555
 
-CMD ["python3", "app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "{subfolder}.{module_file}:app"]
