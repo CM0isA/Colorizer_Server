@@ -19,6 +19,8 @@ docs/_build/
 .vscode
 *.html
 TrainData/
+Test/
+result/
 
 # Coverage reports
 htmlcov/

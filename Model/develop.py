@@ -62,15 +62,15 @@ def image_a_b_gen(batch_size):
         Y_batch = lab_batch[:,:,:,1:] / 128
         yield (X_batch.reshape(X_batch.shape+(1,)), Y_batch)
 
-# Train model      
-# tensorboard = tensorBoard(log_dir="output/first_run")
+# Train model
 model.fit(image_a_b_gen(batch_size), epochs=1, steps_per_epoch=10)
+# print('My custom loss: ', model.loss_tracker.result().numpy())
 
 # Save model
 model_json = model.to_json()
 with open("model.json", "w") as json_file:
     json_file.write(model_json)
-model.save_weights("model.h5")
+model.save("model.h5")
 
 
 # Test images
