@@ -17,6 +17,8 @@ build/
 .idea/
 docs/_build/
 .vscode
+*.html
+TrainData/
 
 # Coverage reports
 htmlcov/
