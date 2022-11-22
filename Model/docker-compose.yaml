@@ -1,0 +1,15 @@
+services:
+  colorizer:
+    image: colorizer
+    volumes:
+      - type: bind
+        source: "D:\\Projects\\ColorizerServer\\Model"
+        target: "/app"
+    command:  python /app/test.py
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
