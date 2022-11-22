@@ -1,10 +1,7 @@
-from keras.layers import Conv2D, UpSampling2D, InputLayer, Conv2DTranspose
-from keras.layers import Activation, Dense, Dropout, Flatten
+from keras.models import load_model
 from tensorflow.keras.layers import BatchNormalization
-from keras.models import Sequential
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 from skimage.color import rgb2lab, lab2rgb, rgb2gray, xyz2lab
-# from skimage.io import imsave
 import numpy as np
 import os
 import random
@@ -13,38 +10,19 @@ import tensorflow as tf
 # Get images
 X = []
 
-for filename in os.listdir('./TrainData/test'):
-    image = load_img('./TrainData/test/' + filename)
+for filename in os.listdir('./TrainData/PNG'):
+    image = load_img('./TrainData/PNG/' + filename)
     image = image.resize((512,512))
     image_as_array = img_to_array(image)
     image_as_array = np.array(image_as_array, dtype=float)
     X.append(image_as_array)
-
 
 X = np.array(X, dtype=float)
 split = int(0.95*len(X))
 Xtrain = X[:split]
 Xtrain = 1.0/255*Xtrain
 
-# Sequencial model
-model = Sequential()
-model.add(InputLayer(input_shape=(512, 512, 1)))
-model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(64, (3, 3), activation='relu', padding='same', strides=2))
-model.add(Conv2D(128, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(128, (3, 3), activation='relu', padding='same', strides=2))
-model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(256, (3, 3), activation='relu', padding='same', strides=2))
-model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(128, (3, 3), activation='relu', padding='same'))
-model.add(UpSampling2D((2, 2)))
-model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-model.add(UpSampling2D((2, 2)))
-model.add(Conv2D(32, (3, 3), activation='relu', padding='same'))
-model.add(Conv2D(2, (3, 3), activation='tanh', padding='same'))
-model.add(UpSampling2D((2, 2)))
-model.compile(optimizer='rmsprop', loss='mse')
+model = model = load_model('model.h5')
 
 # Image transformer
 datagen = ImageDataGenerator(
@@ -63,8 +41,7 @@ def image_a_b_gen(batch_size):
         yield (X_batch.reshape(X_batch.shape+(1,)), Y_batch)
 
 # Train model
-model.fit(image_a_b_gen(batch_size), epochs=1, steps_per_epoch=10)
-# print('My custom loss: ', model.loss_tracker.result().numpy())
+model.fit(image_a_b_gen(batch_size), epochs=50, steps_per_epoch=10)
 
 # Save model
 model_json = model.to_json()
