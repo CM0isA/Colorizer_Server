@@ -41,7 +41,7 @@ def image_a_b_gen(batch_size):
         yield (X_batch.reshape(X_batch.shape+(1,)), Y_batch)
 
 # Train model
-model.fit(image_a_b_gen(batch_size), epochs=50, steps_per_epoch=10)
+model.fit(image_a_b_gen(batch_size), epochs=10, steps_per_epoch=10)
 
 # Save model
 model_json = model.to_json()
