@@ -24,7 +24,7 @@ color_me = color_me.reshape(color_me.shape+(1,))
 
 # Test model
 output = model.predict(color_me)
-output = output * 128
+output = output * 256
 
 # Output colorizations
 for i in range(len(output)):

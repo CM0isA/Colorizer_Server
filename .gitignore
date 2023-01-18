@@ -20,7 +20,7 @@ docs/_build/
 *.html
 TrainData/
 Test/
-result/
+result*
 
 # Coverage reports
 htmlcov/

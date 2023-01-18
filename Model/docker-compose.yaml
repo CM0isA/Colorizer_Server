@@ -5,7 +5,7 @@ services:
       - type: bind
         source: "D:\\Projects\\ColorizerServer\\Model"
         target: "/app"
-    command:  python /app/train.py # develop.py - train the model, test.py - test progress
+    command:  python /app/train_batches.py # train.py - train the model, test.py - test progress
     deploy:
       resources:
         reservations:
